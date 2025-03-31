@@ -13,7 +13,7 @@ use {
     },
 };
 
-declare_id!("52quezNUzc1Ej6Jh6L4bvtxPW8j6TEFHuLVAWiFvdnsc");
+declare_id!("5r1ZNqK7McV8vquv2EFyqtkdZaw6zM6bPxWCKtuSW39e");
 
 #[program]
 pub mod nft_minter {
@@ -40,7 +40,7 @@ pub mod nft_minter {
             1,
         )?;
 
-        msg!("Creating metadata account");
+        msg!("Creating metadata account: {} ", ctx.accounts.metadata_account.key());
         // Cross Program Invocation (CPI)
         // Invoking the create_metadata_account_v3 instruction on the token metadata program
         create_metadata_accounts_v3(
@@ -70,7 +70,7 @@ pub mod nft_minter {
             None,  // Collection details
         )?;
 
-        msg!("Creating master edition account");
+        msg!("Creating master edition account: {}",ctx.accounts.edition_account.key());
         // Cross Program Invocation (CPI)
         // Invoking the create_master_edition_v3 instruction on the token metadata program
         create_master_edition_v3(

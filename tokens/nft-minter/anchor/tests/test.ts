@@ -19,10 +19,10 @@ describe('NFT Minter', () => {
   it('Create an NFT!', async () => {
     // Generate a keypair to use as the address of our mint account
     const mintKeypair = new Keypair();
-
+    console.log('mintKeypair：', mintKeypair.publicKey);
     // Derive the associated token address account for the mint and payer.
     const associatedTokenAccountAddress = getAssociatedTokenAddressSync(mintKeypair.publicKey, payer.publicKey);
-
+    console.log('associatedTokenAccountAddress:', associatedTokenAccountAddress);
     const transactionSignature = await program.methods
       .mintNft(metadata.name, metadata.symbol, metadata.uri)
       .accounts({
