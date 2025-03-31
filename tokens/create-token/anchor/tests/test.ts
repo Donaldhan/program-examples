@@ -17,7 +17,7 @@ describe('Create Tokens', () => {
   it('Create an SPL Token!', async () => {
     // Generate new keypair to use as address for mint account.
     const mintKeypair = new Keypair();
-
+    console.log('mintKeypair：', mintKeypair.publicKey);
     // SPL Token default = 9 decimals
     const transactionSignature = await program.methods
       .createTokenMint(9, metadata.name, metadata.symbol, metadata.uri)
@@ -32,11 +32,11 @@ describe('Create Tokens', () => {
     console.log(`   Mint Address: ${mintKeypair.publicKey}`);
     console.log(`   Transaction Signature: ${transactionSignature}`);
   });
-
+  // Create an SPL Token , 非mint nft 当前这个存在一定的出入
   it('Create an NFT!', async () => {
     // Generate new keypair to use as address for mint account.
     const mintKeypair = new Keypair();
-
+    console.log('mintKeypair：', mintKeypair.publicKey);
     // NFT default = 0 decimals
     const transactionSignature = await program.methods
       .createTokenMint(0, metadata.name, metadata.symbol, metadata.uri)

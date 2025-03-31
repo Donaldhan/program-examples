@@ -11,7 +11,7 @@ use {
     },
 };
 
-declare_id!("GwvQ53QTu1xz3XXYfG5m5jEqwhMBvVBudPS8TUuFYnhT");
+declare_id!("8AHDoGeCsHdgxM7QRcg6vXybN16b3A28zuF4GEMA5Ltr");
 
 #[program]
 pub mod create_token {
