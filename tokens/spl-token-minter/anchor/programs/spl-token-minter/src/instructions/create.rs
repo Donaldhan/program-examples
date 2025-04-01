@@ -74,7 +74,8 @@ pub fn create_token(
         true,  // Update authority is signer
         None,  // Collection details
     )?;
-
+    msg!("Token mint:{}",ctx.accounts.mint_account.key());
+    msg!("Token metadata:{}",ctx.accounts.metadata_account.key());
     msg!("Token created successfully.");
 
     Ok(())
