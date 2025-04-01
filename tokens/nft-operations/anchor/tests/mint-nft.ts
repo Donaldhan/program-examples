@@ -21,10 +21,11 @@ describe('mint-nft', () => {
 
   const collectionKeypair = Keypair.generate();
   const collectionMint = collectionKeypair.publicKey;
+  console.log('collectionMint: ', collectionMint);
 
   const mintKeypair = Keypair.generate();
   const mint = mintKeypair.publicKey;
-
+  console.log('mint: ', mint);
   const getMetadata = async (mint: anchor.web3.PublicKey): Promise<anchor.web3.PublicKey> => {
     return anchor.web3.PublicKey.findProgramAddressSync(
       [Buffer.from('metadata'), TOKEN_METADATA_PROGRAM_ID.toBuffer(), mint.toBuffer()],
@@ -73,7 +74,7 @@ describe('mint-nft', () => {
   });
 
   it('Mint NFT', async () => {
-    console.log('\nMint', mint.toBase58());
+    console.log('\nMint NFT', mint.toBase58());
 
     const metadata = await getMetadata(mint);
     console.log('Metadata', metadata.toBase58());

@@ -74,7 +74,9 @@ impl<'info> CreateCollection<'info> {
         let system_program = &self.system_program.to_account_info();
         let spl_token_program = &self.token_program.to_account_info();
         let spl_metadata_program = &self.token_metadata_program.to_account_info();
-
+        msg!("Collection NFT metadata:{}", self.metadata.key());
+        msg!("Collection NFT master_edition:{}", self.master_edition.key());
+        msg!("Collection NFT mint:{}", self.mint.key());
         let seeds = &[
             &b"authority"[..], 
             &[bumps.mint_authority]
@@ -89,7 +91,7 @@ impl<'info> CreateCollection<'info> {
         };
         let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer_seeds);
         mint_to(cpi_ctx, 1)?;
-        msg!("Collection NFT minted!");
+        msg!("Collection NFT minted to:{}", self.destination.key());
 
         let creator = vec![
             Creator {
@@ -114,7 +116,7 @@ impl<'info> CreateCollection<'info> {
                 data: DataV2 {
                     name: "DummyCollection".to_owned(),
                     symbol: "DC".to_owned(),
-                    uri: "".to_owned(),
+                    uri: "https://raw.githubusercontent.com/solana-developers/program-examples/new-examples/tokens/tokens/.assets/spl-token.json".to_owned(),
                     seller_fee_basis_points: 0,
                     creators: Some(creator),
                     collection: None,
