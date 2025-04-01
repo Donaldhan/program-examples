@@ -4,11 +4,11 @@
 resolution = true
 skip-lint = false
 
-[programs.localnet]
-fundraiser = "Eoiuq1dXvHxh6dLx3wh9gj8kSAUpga11krTrbfF5XYsC"
-
 [programs.devnet]
-fundraiser = "Eoiuq1dXvHxh6dLx3wh9gj8kSAUpga11krTrbfF5XYsC"
+fundraiser = "5XQSYWf6864N3Vb6ij6n6h4op6B2KoHxUmcor9wguRwU"
+
+[programs.localnet]
+fundraiser = "5XQSYWf6864N3Vb6ij6n6h4op6B2KoHxUmcor9wguRwU"
 
 [registry]
 url = "https://api.apr.dev"
