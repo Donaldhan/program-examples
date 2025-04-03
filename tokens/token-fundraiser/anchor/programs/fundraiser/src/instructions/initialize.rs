@@ -1,16 +1,10 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{
-    associated_token::AssociatedToken, 
-    token::{
-        Mint, 
-        Token, 
-        TokenAccount
-    }
+    associated_token::AssociatedToken,
+    token::{Mint, Token, TokenAccount},
 };
 
-use crate::{
-    state::Fundraiser, FundraiserError, ANCHOR_DISCRIMINATOR, MIN_AMOUNT_TO_RAISE
-};
+use crate::{state::Fundraiser, FundraiserError, ANCHOR_DISCRIMINATOR, MIN_AMOUNT_TO_RAISE};
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
@@ -38,8 +32,12 @@ pub struct Initialize<'info> {
 }
 
 impl<'info> Initialize<'info> {
-    pub fn initialize(&mut self, amount: u64, duration: u16, bumps: &InitializeBumps) -> Result<()> {
-
+    pub fn initialize(
+        &mut self,
+        amount: u64,
+        duration: u16,
+        bumps: &InitializeBumps,
+    ) -> Result<()> {
         // Check if the amount to raise meets the minimum amount required
         require!(
             amount >= MIN_AMOUNT_TO_RAISE.pow(self.mint_to_raise.decimals as u32),
@@ -54,9 +52,12 @@ impl<'info> Initialize<'info> {
             current_amount: 0,
             time_started: Clock::get()?.unix_timestamp,
             duration,
-            bump: bumps.fundraiser
+            bump: bumps.fundraiser,
         });
-        
+        msg!("maker:{}", self.maker.key());
+        msg!("mint_to_raise:{}", self.mint_to_raise.key());
+        msg!("fundraiser:{}", self.fundraiser.key());
+        msg!("vault:{}", self.vault.key());
         Ok(())
     }
 }

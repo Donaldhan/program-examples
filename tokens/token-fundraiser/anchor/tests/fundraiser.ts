@@ -19,7 +19,7 @@ describe('fundraiser', () => {
   const program = anchor.workspace.Fundraiser as Program<Fundraiser>;
 
   const maker = anchor.web3.Keypair.generate();
-
+  console.log('maker:', maker.publicKey);
   let mint: anchor.web3.PublicKey;
 
   let contributorATA: anchor.web3.PublicKey;
@@ -29,12 +29,12 @@ describe('fundraiser', () => {
   const wallet = provider.wallet as NodeWallet;
 
   const fundraiser = anchor.web3.PublicKey.findProgramAddressSync([Buffer.from('fundraiser'), maker.publicKey.toBuffer()], program.programId)[0];
-
+  console.log('fundraiser:', fundraiser);
   const contributor = anchor.web3.PublicKey.findProgramAddressSync(
     [Buffer.from('contributor'), fundraiser.toBuffer(), provider.publicKey.toBuffer()],
     program.programId,
   )[0];
-
+  console.log('contributor account', contributor);
   const confirm = async (signature: string): Promise<string> => {
     const block = await provider.connection.getLatestBlockhash();
     await provider.connection.confirmTransaction({
@@ -52,8 +52,10 @@ describe('fundraiser', () => {
     console.log('Mint created', mint.toBase58());
 
     contributorATA = (await getOrCreateAssociatedTokenAccount(provider.connection, wallet.payer, mint, wallet.publicKey)).address;
+    console.log('contributorATA', contributorATA);
 
     makerATA = (await getOrCreateAssociatedTokenAccount(provider.connection, wallet.payer, mint, maker.publicKey)).address;
+    console.log('makerATA', makerATA);
 
     const mintTx = await mintTo(provider.connection, wallet.payer, mint, contributorATA, provider.publicKey, 1_000_000_0);
     console.log('Minted 10 tokens to contributor', mintTx);
@@ -61,8 +63,10 @@ describe('fundraiser', () => {
 
   it('Initialize Fundaraiser', async () => {
     const vault = getAssociatedTokenAddressSync(mint, fundraiser, true);
-
+    console.log('vault', vault);
+    //持续时间为0，
     const tx = await program.methods
+      // .initialize(new anchor.BN(30000000), 6)
       .initialize(new anchor.BN(30000000), 0)
       .accountsPartial({
         maker: maker.publicKey,
@@ -150,7 +154,8 @@ describe('fundraiser', () => {
       console.log('Vault balance', (await provider.connection.getTokenAccountBalance(vault)).value.amount);
     } catch (error) {
       console.log('\nError contributing to fundraiser');
-      console.log(error.msg);
+      // console.log(error.errorMessage);
+      console.log(error);
     }
   });
 
@@ -177,7 +182,8 @@ describe('fundraiser', () => {
       console.log('Vault balance', (await provider.connection.getTokenAccountBalance(vault)).value.amount);
     } catch (error) {
       console.log('\nError checking contributions');
-      console.log(error.msg);
+      // console.log(error.errorMessage);
+      console.log(error);
     }
   });
 

@@ -44,7 +44,7 @@ pub struct CheckContributions<'info> {
     pub system_program: Program<'info, System>,
     pub associated_token_program: Program<'info, AssociatedToken>,
 }
-
+/// if fundraiser finish , then transfer all the funds to the maker from vault
 impl<'info> CheckContributions<'info> {
     pub fn check_contributions(&self) -> Result<()> {
         
@@ -77,7 +77,8 @@ impl<'info> CheckContributions<'info> {
 
         // Transfer the funds from the vault to the maker
         transfer(cpi_ctx, self.vault.amount)?;
-
+        msg!("Transferred {} tokens to the maker", self.vault.amount);
+        msg!("marker ata {}", self.maker_ata.key());
         Ok(())
     }
 }

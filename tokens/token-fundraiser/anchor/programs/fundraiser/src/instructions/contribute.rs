@@ -103,7 +103,9 @@ impl<'info> Contribute<'info> {
         self.fundraiser.current_amount += amount;
 
         self.contributor_account.amount += amount;
-
+        msg!("contributor:{}", self.contributor.key());
+        msg!("contributor_account:{}", self.contributor_account.key());
+        msg!("contributor_ata:{}", self.contributor_ata.key());
         Ok(())
     }
 }

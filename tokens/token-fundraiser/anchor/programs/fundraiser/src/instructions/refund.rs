@@ -93,7 +93,9 @@ impl<'info> Refund<'info> {
 
         // Update the fundraiser state by reducing the amount contributed
         self.fundraiser.current_amount -= self.contributor_account.amount;
-
+        msg!("contributor:{}", self.contributor.key());
+        msg!("contributor_account:{}", self.contributor_account.key());
+        msg!("contributor_ata:{}", self.contributor_ata.key());
         Ok(())
     }
 }
