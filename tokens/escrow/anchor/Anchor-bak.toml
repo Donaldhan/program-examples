@@ -15,6 +15,5 @@ cluster = "Localnet"
 wallet = "~/.config/solana/vt_id.json"
 
 [scripts]
-test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
-# test = "ts-node --loader ts-node/esm.mjs tests/escrow.test.ts"
-# test = "node --loader ts-node/esm --experimental-specifier-resolution=node  tests/escrow.test.ts"
+# test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.test.ts"
+test = "ts-node --loader ts-node/esm.mjs tests/escrow.test.ts"

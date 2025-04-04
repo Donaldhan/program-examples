@@ -33,7 +33,7 @@ pub struct MakeOffer<'info> {
     #[account(
         init,
         payer = maker,
-        space = ANCHOR_DISCRIMINATOR + Offer::INIT_SPACE,
+        space = ANCHOR_DISCRIMINATOR + Offer::INIT_SPACE + 8,
         seeds = [b"offer", maker.key().as_ref(), id.to_le_bytes().as_ref()],
         bump
     )]
@@ -58,6 +58,9 @@ pub fn send_offered_tokens_to_vault(
     context: &Context<MakeOffer>,
     token_a_offered_amount: u64,
 ) -> Result<()> {
+    msg!("maker_token_account_a:{}", context.accounts.maker_token_account_a.key());
+    msg!("vault:{}", context.accounts.vault.key());
+    msg!("maker:{}", context.accounts.maker.key());
     transfer_tokens(
         &context.accounts.maker_token_account_a,
         &context.accounts.vault,
@@ -78,5 +81,6 @@ pub fn save_offer(context: Context<MakeOffer>, id: u64, token_b_wanted_amount: u
         token_b_wanted_amount,
         bump: context.bumps.offer,
     });
+    msg!("offer:{}", context.accounts.offer.key());
     Ok(())
 }

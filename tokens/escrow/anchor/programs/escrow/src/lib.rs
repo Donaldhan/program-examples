@@ -9,7 +9,7 @@ pub use constants::*;
 pub use instructions::*;
 pub use state::*;
 
-declare_id!("qbuMdeYxYJXBjU6C6qFKjZKjXmrU83eDQomHdrch826");
+declare_id!("3EWWCncBgfnppsVEi96UGd4Arzk5WCkLiZqht6YKNBk7");
 
 #[program]
 pub mod escrow {
@@ -27,6 +27,7 @@ pub mod escrow {
 
     pub fn take_offer(context: Context<TakeOffer>) -> Result<()> {
         instructions::take_offer::send_wanted_tokens_to_maker(&context)?;
+        // instructions::take_offer::send_wanted_tokens_to_maker(&context)
         instructions::take_offer::withdraw_and_close_vault(context)
     }
 }

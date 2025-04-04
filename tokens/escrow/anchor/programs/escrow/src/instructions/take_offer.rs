@@ -75,6 +75,15 @@ pub struct TakeOffer<'info> {
 }
 
 pub fn send_wanted_tokens_to_maker(ctx: &Context<TakeOffer>) -> Result<()> {
+    msg!("taker:{}", ctx.accounts.taker.key());
+    msg!("Offer bump:{}", ctx.accounts.offer.bump);
+    msg!("Offer struct size: {}", Offer::INIT_SPACE);
+    msg!("offer token_b_wanted_amount tokenBWantedAmount Address: {:?}", &ctx.accounts.offer.token_b_wanted_amount  as *const _);
+    msg!("offer signer: {:?}", ctx.accounts.offer.key());
+    msg!("offer token_b_wanted_amount:{}", ctx.accounts.offer.token_b_wanted_amount);
+    msg!("taker_token_account_b:{}", ctx.accounts.taker_token_account_b.key());
+    msg!("maker_token_account_b:{}", ctx.accounts.maker_token_account_b.key());
+   
     transfer_tokens(
         &ctx.accounts.taker_token_account_b,
         &ctx.accounts.maker_token_account_b,
@@ -86,12 +95,14 @@ pub fn send_wanted_tokens_to_maker(ctx: &Context<TakeOffer>) -> Result<()> {
 }
 
 pub fn withdraw_and_close_vault(ctx: Context<TakeOffer>) -> Result<()> {
+    msg!("withdraw_and_close_vault Offer bump:{}", ctx.accounts.offer.bump);
     let seeds = &[
         b"offer",
         ctx.accounts.maker.to_account_info().key.as_ref(),
         &ctx.accounts.offer.id.to_le_bytes()[..],
         &[ctx.accounts.offer.bump],
     ];
+   
     let signer_seeds = [&seeds[..]];
 
     let accounts = TransferChecked {
@@ -124,6 +135,5 @@ pub fn withdraw_and_close_vault(ctx: Context<TakeOffer>) -> Result<()> {
         accounts,
         &signer_seeds,
     );
-
     close_account(cpi_context)
 }
