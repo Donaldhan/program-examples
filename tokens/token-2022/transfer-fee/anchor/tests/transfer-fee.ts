@@ -14,11 +14,13 @@ describe('transfer-fee', () => {
 
   const mintKeypair = new anchor.web3.Keypair();
   const recipient = new anchor.web3.Keypair();
+  console.log('mintKeypair:', mintKeypair.publicKey.toString());
+  console.log('recipient:', recipient.publicKey.toString());
 
   const senderTokenAccountAddress = getAssociatedTokenAddressSync(mintKeypair.publicKey, wallet.publicKey, false, TOKEN_2022_PROGRAM_ID);
-
+  console.log('senderTokenAccountAddress:', senderTokenAccountAddress);
   const recipientTokenAccountAddress = getAssociatedTokenAddressSync(mintKeypair.publicKey, recipient.publicKey, false, TOKEN_2022_PROGRAM_ID);
-
+  console.log('recipientTokenAccountAddress:', recipientTokenAccountAddress);
   it('Create Mint with Transfer Fee', async () => {
     const transferFeeBasisPoints = 100;
     const maximumFee = 1;
