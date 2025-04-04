@@ -248,20 +248,21 @@ describe('escrow', async () => {
 
       const tx = await confirmTransaction(connection, transactionSignature);
       console.log('Your transaction signature', tx);
+
+      // Check the offered tokens are now in Bob's account
+      // (note: there is no before balance as Bob didn't have any offered tokens before the transaction)
+      const bobTokenAccountBalanceAfterResponse = await connection.getTokenAccountBalance(accounts.takerTokenAccountA);
+      const bobTokenAccountBalanceAfter = new BN(bobTokenAccountBalanceAfterResponse.value.amount);
+      assert(bobTokenAccountBalanceAfter.eq(tokenAOfferedAmount));
+
+      // Check the wanted tokens are now in Alice's account
+      // (note: there is no before balance as Alice didn't have any wanted tokens before the transaction)
+      const aliceTokenAccountBalanceAfterResponse = await connection.getTokenAccountBalance(accounts.makerTokenAccountB);
+      const aliceTokenAccountBalanceAfter = new BN(aliceTokenAccountBalanceAfterResponse.value.amount);
+      assert(aliceTokenAccountBalanceAfter.eq(tokenBWantedAmount));
     } catch (error) {
       console.log('\nError takeOffer');
       console.log(error);
     }
-    // Check the offered tokens are now in Bob's account
-    // (note: there is no before balance as Bob didn't have any offered tokens before the transaction)
-    const bobTokenAccountBalanceAfterResponse = await connection.getTokenAccountBalance(accounts.takerTokenAccountA);
-    const bobTokenAccountBalanceAfter = new BN(bobTokenAccountBalanceAfterResponse.value.amount);
-    assert(bobTokenAccountBalanceAfter.eq(tokenAOfferedAmount));
-
-    // Check the wanted tokens are now in Alice's account
-    // (note: there is no before balance as Alice didn't have any wanted tokens before the transaction)
-    const aliceTokenAccountBalanceAfterResponse = await connection.getTokenAccountBalance(accounts.makerTokenAccountB);
-    const aliceTokenAccountBalanceAfter = new BN(aliceTokenAccountBalanceAfterResponse.value.amount);
-    assert(aliceTokenAccountBalanceAfter.eq(tokenBWantedAmount));
   }).slow(ANCHOR_SLOW_TEST_THRESHOLD);
 });

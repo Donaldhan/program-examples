@@ -20,9 +20,9 @@ pub struct TakeOffer<'info> {
     #[account(mut)]
     pub maker: SystemAccount<'info>,
 
-    pub token_mint_a: InterfaceAccount<'info, Mint>,
+    pub token_mint_a: Box<InterfaceAccount<'info, Mint>>,
 
-    pub token_mint_b: InterfaceAccount<'info, Mint>,
+    pub token_mint_b: Box<InterfaceAccount<'info, Mint>>,
 
     #[account(
         init_if_needed,
@@ -59,7 +59,7 @@ pub struct TakeOffer<'info> {
         seeds = [b"offer", maker.key().as_ref(), offer.id.to_le_bytes().as_ref()],
         bump = offer.bump
     )]
-    offer: Account<'info, Offer>,
+    offer: Box<Account<'info, Offer>>,
 
     #[account(
         mut,
@@ -67,7 +67,7 @@ pub struct TakeOffer<'info> {
         associated_token::authority = offer,
         associated_token::token_program = token_program,
     )]
-    pub vault: InterfaceAccount<'info, TokenAccount>,
+    pub vault: Box<InterfaceAccount<'info, TokenAccount>>,
 
     pub associated_token_program: Program<'info, AssociatedToken>,
     pub token_program: Interface<'info, TokenInterface>,
@@ -75,14 +75,14 @@ pub struct TakeOffer<'info> {
 }
 
 pub fn send_wanted_tokens_to_maker(ctx: &Context<TakeOffer>) -> Result<()> {
-    msg!("taker:{}", ctx.accounts.taker.key());
-    msg!("Offer bump:{}", ctx.accounts.offer.bump);
-    msg!("Offer struct size: {}", Offer::INIT_SPACE);
-    msg!("offer token_b_wanted_amount tokenBWantedAmount Address: {:?}", &ctx.accounts.offer.token_b_wanted_amount  as *const _);
-    msg!("offer signer: {:?}", ctx.accounts.offer.key());
-    msg!("offer token_b_wanted_amount:{}", ctx.accounts.offer.token_b_wanted_amount);
-    msg!("taker_token_account_b:{}", ctx.accounts.taker_token_account_b.key());
-    msg!("maker_token_account_b:{}", ctx.accounts.maker_token_account_b.key());
+    // msg!("taker:{}", ctx.accounts.taker.key());
+    // msg!("Offer bump:{}", ctx.accounts.offer.bump);
+    // msg!("Offer struct size: {}", Offer::INIT_SPACE);
+    // msg!("offer token_b_wanted_amount tokenBWantedAmount Address: {:?}", &ctx.accounts.offer.token_b_wanted_amount  as *const _);
+    // msg!("offer signer: {:?}", ctx.accounts.offer.key());
+    // msg!("offer token_b_wanted_amount:{}", ctx.accounts.offer.token_b_wanted_amount);
+    // msg!("taker_token_account_b:{}", ctx.accounts.taker_token_account_b.key());
+    // msg!("maker_token_account_b:{}", ctx.accounts.maker_token_account_b.key());
    
     transfer_tokens(
         &ctx.accounts.taker_token_account_b,
