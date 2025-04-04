@@ -16,6 +16,8 @@ describe('memo-transfer', () => {
 
   const mintKeypair = new anchor.web3.Keypair();
   const tokenKeypair = new anchor.web3.Keypair();
+  console.log('mintKeypair:', mintKeypair.publicKey.toString());
+  console.log('tokenKeypair:', tokenKeypair.publicKey.toString());
 
   it('Create Token Account with RequiredMemo extension', async () => {
     await createMint(

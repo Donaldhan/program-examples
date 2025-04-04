@@ -5,14 +5,14 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-memo_transfer = "5BQyC7y2Pc283woThq11uZRqsgcRbBRLKz4yQ8BJadi2"
+memo_transfer = "FDJDYE9o7Qg5UQ6mt12JSStqpVEaysQF94s1EyXh2uTu"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
 cluster = "Localnet"
-wallet = "~/.config/solana/id.json"
+wallet = "~/.config/solana/vt_id.json"
 
 [scripts]
 test = "pnpm ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
