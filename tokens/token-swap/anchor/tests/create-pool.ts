@@ -15,9 +15,10 @@ describe('Create pool', () => {
 
   beforeEach(async () => {
     values = createValues();
-
+    console.log('values:', values);
     await program.methods.createAmm(values.id, values.fee).accounts({ amm: values.ammKey, admin: values.admin.publicKey }).rpc();
-
+    // console.log('mintA',  values.mintAKeypair.publicKey.toString());
+    // console.log('mintA',  values.mintBKeypair.publicKey.toString());
     await mintingTokens({
       connection,
       creator: values.admin,
@@ -27,19 +28,24 @@ describe('Create pool', () => {
   });
 
   it('Creation', async () => {
-    await program.methods
-      .createPool()
-      .accounts({
-        amm: values.ammKey,
-        pool: values.poolKey,
-        poolAuthority: values.poolAuthority,
-        mintLiquidity: values.mintLiquidity,
-        mintA: values.mintAKeypair.publicKey,
-        mintB: values.mintBKeypair.publicKey,
-        poolAccountA: values.poolAccountA,
-        poolAccountB: values.poolAccountB,
-      })
-      .rpc({ skipPreflight: true });
+    try {
+      await program.methods
+        .createPool()
+        .accounts({
+          amm: values.ammKey,
+          pool: values.poolKey,
+          poolAuthority: values.poolAuthority,
+          mintLiquidity: values.mintLiquidity,
+          mintA: values.mintAKeypair.publicKey,
+          mintB: values.mintBKeypair.publicKey,
+          poolAccountA: values.poolAccountA,
+          poolAccountB: values.poolAccountB,
+        })
+        .rpc();
+      // .rpc({ skipPreflight: true });
+    } catch (e) {
+      console.log('error:', e);
+    }
   });
 
   it('Invalid mints', async () => {

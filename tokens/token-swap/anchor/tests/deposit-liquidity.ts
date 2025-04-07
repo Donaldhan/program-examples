@@ -15,6 +15,7 @@ describe('Deposit liquidity', () => {
 
   beforeEach(async () => {
     values = createValues();
+    // console.log("values:",values);
 
     await program.methods.createAmm(values.id, values.fee).accounts({ amm: values.ammKey, admin: values.admin.publicKey }).rpc();
 
@@ -60,6 +61,7 @@ describe('Deposit liquidity', () => {
       .rpc({ skipPreflight: true });
 
     const depositTokenAccountLiquditiy = await connection.getTokenAccountBalance(values.liquidityAccount);
+    //lock the minimum amount of liquidity
     expect(depositTokenAccountLiquditiy.value.amount).to.equal(values.depositAmountA.sub(values.minimumLiquidity).toString());
     const depositTokenAccountA = await connection.getTokenAccountBalance(values.holderAccountA);
     expect(depositTokenAccountA.value.amount).to.equal(values.defaultSupply.sub(values.depositAmountA).toString());

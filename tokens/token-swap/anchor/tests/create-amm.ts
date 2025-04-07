@@ -18,7 +18,8 @@ describe('Create AMM', () => {
   });
 
   it('Creation', async () => {
-    await program.methods.createAmm(values.id, values.fee).accounts({ amm: values.ammKey, admin: values.admin.publicKey }).rpc();
+    const tx = await program.methods.createAmm(values.id, values.fee).accounts({ amm: values.ammKey, admin: values.admin.publicKey }).rpc();
+    console.log('tx', tx);
 
     const ammAccount = await program.account.amm.fetch(values.ammKey);
     expect(ammAccount.id.toString()).to.equal(values.id.toString());

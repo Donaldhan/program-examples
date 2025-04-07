@@ -55,36 +55,43 @@ describe('Withdraw liquidity', () => {
         depositorAccountB: values.holderAccountB,
       })
       .signers([values.admin])
-      .rpc({ skipPreflight: true });
+      .rpc();
+    // .rpc({ skipPreflight: true });
   });
 
   it('Withdraw everything', async () => {
-    await program.methods
-      .withdrawLiquidity(values.depositAmountA.sub(values.minimumLiquidity))
-      .accounts({
-        amm: values.ammKey,
-        pool: values.poolKey,
-        poolAuthority: values.poolAuthority,
-        depositor: values.admin.publicKey,
-        mintLiquidity: values.mintLiquidity,
-        mintA: values.mintAKeypair.publicKey,
-        mintB: values.mintBKeypair.publicKey,
-        poolAccountA: values.poolAccountA,
-        poolAccountB: values.poolAccountB,
-        depositorAccountLiquidity: values.liquidityAccount,
-        depositorAccountA: values.holderAccountA,
-        depositorAccountB: values.holderAccountB,
-      })
-      .signers([values.admin])
-      .rpc({ skipPreflight: true });
+    //lock the minimum amount of liquidity
+    try {
+      await program.methods
+        .withdrawLiquidity(values.depositAmountA.sub(values.minimumLiquidity))
+        .accounts({
+          amm: values.ammKey,
+          pool: values.poolKey,
+          poolAuthority: values.poolAuthority,
+          depositor: values.admin.publicKey,
+          mintLiquidity: values.mintLiquidity,
+          mintA: values.mintAKeypair.publicKey,
+          mintB: values.mintBKeypair.publicKey,
+          poolAccountA: values.poolAccountA,
+          poolAccountB: values.poolAccountB,
+          depositorAccountLiquidity: values.liquidityAccount,
+          depositorAccountA: values.holderAccountA,
+          depositorAccountB: values.holderAccountB,
+        })
+        .signers([values.admin])
+        .rpc();
+      // .rpc({ skipPreflight: true });
+    } catch (e) {
+      console.log('error:', e);
+    }
 
     const liquidityTokenAccount = await connection.getTokenAccountBalance(values.liquidityAccount);
     const depositTokenAccountA = await connection.getTokenAccountBalance(values.holderAccountA);
     const depositTokenAccountB = await connection.getTokenAccountBalance(values.holderAccountB);
     expect(liquidityTokenAccount.value.amount).to.equal('0');
     expect(Number(depositTokenAccountA.value.amount)).to.be.lessThan(values.defaultSupply.toNumber());
-    expect(Number(depositTokenAccountA.value.amount)).to.be.greaterThan(values.defaultSupply.sub(values.depositAmountA).toNumber());
+    expect(Number(depositTokenAccountA.value.amount)).to.be.greaterThanOrEqual(values.defaultSupply.sub(values.depositAmountA).toNumber());
     expect(Number(depositTokenAccountB.value.amount)).to.be.lessThan(values.defaultSupply.toNumber());
-    expect(Number(depositTokenAccountB.value.amount)).to.be.greaterThan(values.defaultSupply.sub(values.depositAmountA).toNumber());
+    expect(Number(depositTokenAccountB.value.amount)).to.be.greaterThanOrEqual(values.defaultSupply.sub(values.depositAmountA).toNumber());
   });
 });

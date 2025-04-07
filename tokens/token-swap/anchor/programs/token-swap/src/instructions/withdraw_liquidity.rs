@@ -11,6 +11,9 @@ use crate::{
 };
 
 pub fn withdraw_liquidity(ctx: Context<WithdrawLiquidity>, amount: u64) -> Result<()> {
+    msg!("pool_account_a {}", ctx.accounts.pool_account_a.key());
+    msg!("depositor_account_a {}", ctx.accounts.depositor_account_a.key());
+    msg!("pool_authority {}", ctx.accounts.pool_authority.key());
     let authority_bump = ctx.bumps.pool_authority;
     let authority_seeds = &[
         &ctx.accounts.pool.amm.to_bytes(),
@@ -20,7 +23,6 @@ pub fn withdraw_liquidity(ctx: Context<WithdrawLiquidity>, amount: u64) -> Resul
         &[authority_bump],
     ];
     let signer_seeds = &[&authority_seeds[..]];
-
     // Transfer tokens from the pool
     let amount_a = I64F64::from_num(amount)
         .checked_mul(I64F64::from_num(ctx.accounts.pool_account_a.amount))
@@ -133,9 +135,11 @@ pub struct WithdrawLiquidity<'info> {
     pub mint_liquidity: Box<Account<'info, Mint>>,
 
     #[account(mut)]
+    // pub mint_a: Account<'info, Mint>,
     pub mint_a: Box<Account<'info, Mint>>,
 
     #[account(mut)]
+    // pub mint_b: Account<'info, Mint>,
     pub mint_b: Box<Account<'info, Mint>>,
 
     #[account(

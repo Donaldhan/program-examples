@@ -39,8 +39,10 @@ export const mintingTokens = async ({
 }) => {
   // Mint tokens
   await connection.confirmTransaction(await connection.requestAirdrop(creator.publicKey, 10 ** 10));
-  await createMint(connection, creator, creator.publicKey, creator.publicKey, decimals, mintAKeypair);
-  await createMint(connection, creator, creator.publicKey, creator.publicKey, decimals, mintBKeypair);
+  const mintA = await createMint(connection, creator, creator.publicKey, creator.publicKey, decimals, mintAKeypair);
+  console.log('mintA', mintA.toString());
+  const mintB = await createMint(connection, creator, creator.publicKey, creator.publicKey, decimals, mintBKeypair);
+  console.log('mintB', mintB.toString());
   await getOrCreateAssociatedTokenAccount(connection, holder, mintAKeypair.publicKey, holder.publicKey, true);
   await getOrCreateAssociatedTokenAccount(connection, holder, mintBKeypair.publicKey, holder.publicKey, true);
   await mintTo(

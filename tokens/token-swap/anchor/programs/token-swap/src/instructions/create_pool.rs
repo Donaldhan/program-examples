@@ -8,12 +8,19 @@ use crate::{
     constants::{AUTHORITY_SEED, LIQUIDITY_SEED},
     state::{Amm, Pool},
 };
-
+use std::mem::size_of;
 pub fn create_pool(ctx: Context<CreatePool>) -> Result<()> {
+    // msg!("Pool size = {}", size_of::<Pool>()); // 这个不包含 discriminator
+    // msg!("pool: {}", ctx.accounts.pool.key());
+    // msg!("mint_liquidity: {}", ctx.accounts.mint_liquidity.key());
+    // msg!("pool_authority: {}", ctx.accounts.pool_authority.key());
     let pool = &mut ctx.accounts.pool;
     pool.amm = ctx.accounts.amm.key();
+    // msg!("amm: {}", pool.amm);
     pool.mint_a = ctx.accounts.mint_a.key();
+    // msg!("mint_a: {}", pool.mint_a);
     pool.mint_b = ctx.accounts.mint_b.key();
+    // msg!("mint_b: {}", pool.mint_b);
 
     Ok(())
 }
@@ -38,6 +45,7 @@ pub struct CreatePool<'info> {
             mint_b.key().as_ref(),
         ],
         bump,
+        
     )]
     pub pool: Box<Account<'info, Pool>>,
 
@@ -68,8 +76,10 @@ pub struct CreatePool<'info> {
     )]
     pub mint_liquidity: Box<Account<'info, Mint>>,
 
+    // pub mint_a: Account<'info, Mint>,
     pub mint_a: Box<Account<'info, Mint>>,
 
+    // pub mint_b: Account<'info, Mint>,
     pub mint_b: Box<Account<'info, Mint>>,
 
     #[account(
