@@ -93,7 +93,7 @@ pub struct WithdrawLiquidity<'info> {
         ],
         bump,
     )]
-    pub amm: Account<'info, Amm>,
+    pub amm: Box<Account<'info, Amm>>,
 
     #[account(
         seeds = [
@@ -105,7 +105,7 @@ pub struct WithdrawLiquidity<'info> {
         has_one = mint_a,
         has_one = mint_b,
     )]
-    pub pool: Account<'info, Pool>,
+    pub pool: Box<Account<'info, Pool>>,
 
     /// CHECK: Read only authority
     #[account(

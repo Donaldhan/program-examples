@@ -76,11 +76,11 @@ pub struct CreatePool<'info> {
     )]
     pub mint_liquidity: Box<Account<'info, Mint>>,
 
-    // pub mint_a: Account<'info, Mint>,
-    pub mint_a: Box<Account<'info, Mint>>,
+    pub mint_a: Account<'info, Mint>,
+    // pub mint_a: Box<Account<'info, Mint>>,
 
-    // pub mint_b: Account<'info, Mint>,
-    pub mint_b: Box<Account<'info, Mint>>,
+    pub mint_b: Account<'info, Mint>,
+    // pub mint_b: Box<Account<'info, Mint>>,
 
     #[account(
         init,
