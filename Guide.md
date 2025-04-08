@@ -1,7 +1,7 @@
 # todo
-* token swap;
+*  
 
-# token 2020
+## token 2020
 basics			
 interest-bearing	
 nft-meta-data-pointer
